@@ -78,59 +78,57 @@ export const useOllamaChat = (usePioneer, initialModel = 'llama3.1') => {
     };
 
     const submitMessage = async (message: string) => {
-        let tag = TAG + ' | submitMessage | '
-        try{
-            console.log(tag, 'message:', message)
-            setMessages([...messages, { role: 'user', content: message }]);
-            setMessages([...messages, { role: 'user', content: message }]);
+        const tag = TAG + ' | submitMessage | ';
+        try {
+            console.log(tag, 'message:', message);
+
+            const newMessages = [...messages, { role: 'user', content: message }];
+            setMessages(newMessages);
 
             const response = await ollama.chat({
                 model: model,
-                messages: messages,
+                messages: newMessages,
                 tools: TOOLS,
             });
-            console.log("response: ", response)
+            console.log("response: ", response);
 
             if (!response.message.tool_calls || response.message.tool_calls.length === 0) {
-                console.log("The model didn't use the function. Its response was: ",response);
-                console.log("The model didn't use the function. Its response was: ",response.message);
-                console.log("The model didn't use the function. Its response was: ",response.message.content);
-                // console.log(response.message.content);
-                if(response.message.content && response.message.content){
-                    setMessages([...messages, { role: 'bot', content: response.message.content }]);
-                } else {
-                    console.error("Failed to generate reponse! ", response)
-                }
+                console.log("The model didn't use the function. Its response was: ", response);
+                console.log("The model didn't use the function. Its response was: ", response.message);
+                console.log("The model didn't use the function. Its response was: ", response.message.content);
 
-                return;
+                if (response.message.content) {
+                    setMessages([...newMessages, { role: 'bot', content: response.message.content }]);
+                } else {
+                    console.error("Failed to generate response! ", response);
+                }
             } else {
-                //use tools
+                // Handle tool calls
                 for (const tool of response.message.tool_calls) {
                     console.log('tool:', tool);
-                    let availableFunctions = EXAMPLE_WALLET
+                    const availableFunctions = EXAMPLE_WALLET;
                     const functionToCall = availableFunctions[tool.function.name];
                     const functionResponse = await functionToCall(tool.function.arguments.coin);
                     console.log('functionResponse:', functionResponse);
-                    // Add function response to the conversation as if the assistant is saying it
-                    setMessages([...messages, {
+
+                    const toolResponseMessage = {
                         role: 'tool',
-                        content: tool.function.name + ` The functionResponse is ${functionResponse}`,
-                    }]);
+                        content: `${tool.function.name} The functionResponse is ${functionResponse}`,
+                    };
+                    const updatedMessages = [...newMessages, toolResponseMessage];
+                    // setMessages(updatedMessages);
+
+                    // Simulate the final response
+                    const finalResponse = await ollama.chat({
+                        model: model,
+                        messages: updatedMessages,
+                    });
+                    console.log(finalResponse.message.content);
+                    setMessages([...updatedMessages, { role: 'bot', content: finalResponse.message.content }]);
                 }
-
-                console.log(tag, 'messages:', messages)
-
-                // const finalResponse = await ollama.chat({
-                //     model: model,
-                //     messages: messages,
-                // });
-                // console.log(finalResponse.message.content);
-                // setMessages([...messages, { role: 'bot', content: finalResponse.message.content }]);
             }
-
-
-        }catch(e){
-            console.error(e)
+        } catch (e) {
+            console.error(e);
         }
     };
 
