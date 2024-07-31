@@ -29,6 +29,12 @@ dependencies:
   '@coinmasters/wallet-wc':
     specifier: 11.0.40
     version: 11.0.40(@coinmasters/toolbox-cosmos@11.0.40)(@coinmasters/toolbox-evm@11.0.40)(@cosmjs/amino@0.31.1)(@cosmjs/encoding@0.31.1)(@cosmjs/math@0.31.1)(@cosmjs/proto-signing@0.31.1)(@cosmjs/stargate@0.31.1)(@types/react@18.3.3)(cosmjs-types@0.8.0)(react@18.3.1)
+  '@pioneer-platform/pioneer-caip':
+    specifier: ^9.2.32
+    version: 9.2.32
+  '@pioneer-platform/pioneer-coins':
+    specifier: ^9.2.23
+    version: 9.2.23(@types/node@20.14.13)
   next:
     specifier: 14.1.4
     version: 14.1.4(@babel/core@7.25.2)(react-dom@18.3.1)(react@18.3.1)

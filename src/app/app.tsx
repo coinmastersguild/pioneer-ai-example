@@ -40,55 +40,6 @@ export default function App() {
     if (app && app.assetContext) setSelectedAsset(app.assetContext);
   }, [app, app?.assetContext]);
 
-  const handleTabsChange = (index: any) => {
-    setTabIndex(index);
-  };
-
-  const onClose = () => {
-    //console.log("onClose")
-  };
-
-  const onSelect = (asset: any) => {
-    //console.log("onSelect: ", asset)
-  };
-
-  const onAcceptSign = (tx: any) => {
-    //console.log("onAcceptSign: ", tx)
-  };
-
-  const setInputAmount = (amount: any) => {
-    console.log("setInputAmount: ", amount);
-  };
-
-  // Function to determine which component to render based on intent
-  const renderComponent = () => {
-    // Your switch case logic here, similar to the original
-    switch (intent) {
-      case 'basic':
-        return <Basic usePioneer={usePioneer} />;
-      case 'asset':
-        return <Asset usePioneer={usePioneer} onClose={onClose} onSelect={onSelect} asset={selectedAsset} />;
-      case 'amount':
-        return <Amount usePioneer={usePioneer} onClose={onClose} asset={selectedAsset} setInputAmount={setInputAmount} />;
-      case 'assets':
-        return <Assets usePioneer={usePioneer} onClose={onClose} onSelect={onSelect} filters={{ onlyOwned: false, noTokens: false, hasPubkey: true }} />;
-      case 'transfer':
-        return <Transfer usePioneer={usePioneer} />;
-      case 'classic':
-        return <Classic usePioneer={usePioneer} />;
-      case 'portfolio':
-        return <Portfolio usePioneer={usePioneer} />;
-      case 'swap':
-        return <Swap usePioneer={usePioneer} />;
-      default:
-        return <div></div>;
-    }
-  };
-
-  const handleIntentChange = (event: any) => {
-    setIntent(event.target.value);
-  };
-
   return (
       <>
         {/* Header */}
