@@ -7,8 +7,7 @@ import * as React from "react";
 import { useState } from "react";
 
 export default function Chat({ usePioneer }) {
-    const [dashboardComponents, setDashboardComponents] = useState([]);
-    const { model, setModel, messages, input, setInput, isOllamaRunning, submitMessage } = useOllamaChat(usePioneer);
+    const { model, setModel, messages, input, setInput, isOllamaRunning, submitMessage, dashboardComponents, setDashboardComponents } = useOllamaChat(usePioneer);
 
     const onClose = () => {
         //console.log("onClose")
@@ -26,7 +25,6 @@ export default function Chat({ usePioneer }) {
         console.log("setInputAmount: ", amount);
     };
 
-    // Function to render selected components
     const renderDashboard = () => {
         return dashboardComponents.map((component, index) => {
             switch (component) {
@@ -52,7 +50,6 @@ export default function Chat({ usePioneer }) {
         });
     };
 
-    // Function to handle checkbox changes
     const handleCheckboxChange = (value) => {
         setDashboardComponents(value);
     };
@@ -71,14 +68,20 @@ export default function Chat({ usePioneer }) {
                     <Checkbox value="swap">Swap</Checkbox>
                 </HStack>
             </CheckboxGroup>
-            {renderDashboard()}
-            {messages.map((msg, index) => (
-                <Card key={index}>
-                    <Box p={4}>
-                        <Text>{msg.role === 'user' ? 'User' : 'Assistant'}: {msg.content}</Text>
-                    </Box>
-                </Card>
-            ))}
+
+            <Box maxH="300px" overflowY="scroll">
+                {messages.slice(-10).map((msg, index) => (
+                    <div>
+                        <Card key={index}>
+                            <Box p={4}>
+                                <Text>{msg.role === 'user' ? 'User' : 'Assistant'}: {msg.content}</Text>
+                            </Box>
+                        </Card>
+                        <br/>
+                    </div>
+                ))}
+            </Box>
+
             <HStack spacing={4}>
                 <Input
                     placeholder="Type your message here..."
@@ -87,6 +90,8 @@ export default function Chat({ usePioneer }) {
                 />
                 <Button onClick={() => submitMessage(input)}>Send</Button>
             </HStack>
+
+            {renderDashboard()}
         </VStack>
     );
 }

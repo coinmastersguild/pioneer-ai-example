@@ -119,8 +119,26 @@
     Generative UI:
 
     basic:
-        View
+        View Server: username, QueryKey Server	https://pioneers.dev/spec/swagger.json
+        Username	user:a6ca0f66
+        QueryKey	key:b7c22c33-3083-41ab-9b6d-e0342c095d00
+        lastConnected	keepkey:device.wallet
+        Asset Context	no wallets paired!
+        Address for context	no wallets paired!
 
+    Asset
+    Asset page, (required assetContext) to be set
+
+    transfer:
+    Transfer page, (required assetContext) to be set
+
+    Classic:
+        view all balances in a table
+
+    Portfolio show the pie chart of all balances
+
+    swap:
+        Trade assets from one asset to the other
 
 
  */
@@ -186,6 +204,23 @@ export const TOOLS = [
                     }
                 },
                 required: ['coin'],
+            },
+        },
+    },
+    {
+        type: 'function',
+        function: {
+            name: 'showComponent',
+            description: 'Show a specific component on the dashboard.',
+            parameters: {
+                type: 'object',
+                properties: {
+                    component: {
+                        type: 'string',
+                        description: 'The name of the component to show (e.g., portfolio, swap, transfer, etc.).',
+                    }
+                },
+                required: ['component'],
             },
         },
     },
