@@ -3,8 +3,6 @@
 import { Select, Box, Tabs, TabList, Tab, TabPanels, TabPanel, Card, Button, Input, VStack, HStack, Text } from '@chakra-ui/react';
 import * as React from 'react';
 import { usePioneer } from "@coinmasters/pioneer-react";
-import { availableChainsByWallet, WalletOption } from '@coinmasters/types';
-import ollama from 'ollama/browser'
 import { useState, useEffect } from 'react';
 //components
 import {
@@ -24,8 +22,7 @@ import {
 } from '@coinmasters/pioneer-lib';
 import Image from 'next/image';
 import { useOnStartApp } from "../utils/onStart";
-
-const DEFAULT_OLLAMA_URL = 'http://127.0.0.1:11434/';
+import Chat from './Chat';
 
 export default function App() {
   const onStartApp = useOnStartApp();
@@ -34,9 +31,6 @@ export default function App() {
   const [intent, setIntent] = useState('classic');
   const [tabIndex, setTabIndex] = useState(1);
   const [selectedAsset, setSelectedAsset] = useState({});
-  const [model, setModel] = useState('llama3.1');
-  const [messages, setMessages] = useState([{ role: 'user', content: 'What is my btc address from my wallet?' }]);
-  const [input, setInput] = useState('');
 
   useEffect(() => {
     onStartApp();
@@ -48,10 +42,6 @@ export default function App() {
 
   const handleTabsChange = (index: any) => {
     setTabIndex(index);
-  };
-
-  const isOllamaRunning = () => {
-    return ollama.isRunning();
   };
 
   const onClose = () => {
@@ -99,16 +89,6 @@ export default function App() {
     setIntent(event.target.value);
   };
 
-  const submitMessage = async (message: string) => {
-    setMessages([...messages, { role: 'user', content: message }]);
-    setInput('');
-    const response = await ollama.chat({
-      model: model,
-      messages: [...messages, { role: 'user', content: message }]
-    });
-    setMessages([...messages, { role: 'user', content: message }, { role: 'assistant', content: response.message.content }]);
-  };
-
   return (
       <>
         {/* Header */}
@@ -124,23 +104,7 @@ export default function App() {
 
         {/* Main Content */}
         <main className="flex-grow p-4">
-          <VStack spacing={4} align="stretch">
-            {messages.map((msg, index) => (
-                <Card key={index}>
-                  <Box p={4}>
-                    <Text>{msg.role === 'user' ? 'User' : 'Assistant'}: {msg.content}</Text>
-                  </Box>
-                </Card>
-            ))}
-            <HStack spacing={4}>
-              <Input
-                  placeholder="Type your message here..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-              />
-              <Button onClick={() => submitMessage(input)}>Send</Button>
-            </HStack>
-          </VStack>
+          <Chat usePioneer={usePioneer} />
         </main>
 
         {/* Footer */}
