@@ -6,42 +6,47 @@ import { PROMPTS_INIT, TOOLS } from './chart';
 const TAG = ' | ollama | ';
 const DEFAULT_OLLAMA_URL = 'http://127.0.0.1:11434/';
 
+type ComponentType = string;
+
+//@ts-ignore
 export const useOllamaChat = (usePioneer, initialModel = 'llama3.1') => {
     const { state } = usePioneer();
     const { app, balances, pubkeys } = state;
     const [model, setModel] = useState(initialModel);
     const [messages, setMessages] = useState(PROMPTS_INIT);
     const [input, setInput] = useState('');
-    const [dashboardComponents, setDashboardComponents] = useState([]);
+    const [dashboardComponents, setDashboardComponents] = useState<ComponentType[]>([]);
+
 
     const isOllamaRunning = () => {
-        return ollama.isRunning();
+        //@TODO axios to DEFAULT_OLLAMA_URL
+        // return ollama.isRunning();
     };
 
     let EXAMPLE_WALLET = {
-        getAddress: async (network) => {
-            let pubkeys = app.pubkeys.filter((e) => e.networks.includes(network));
+        getAddress: async (network:any) => {
+            let pubkeys = app.pubkeys.filter((e:any) => e.networks.includes(network));
             if (pubkeys.length > 0) {
                 return pubkeys[0].address || pubkeys[0].master;
             } else {
                 throw Error("No pubkey found for " + network);
             }
         },
-        getBalance: async (network) => {
-            let balance = app.balances.filter((b) => b.networkId === network);
+        getBalance: async (network:any) => {
+            let balance = app.balances.filter((b:any) => b.networkId === network);
             return JSON.stringify(balance);
         }
     };
 
-    const availableFunctions = {
+    const availableFunctions:any = {
         ...EXAMPLE_WALLET,
-        showComponent: async ({ component }) => {
-            setDashboardComponents((prev) => [...new Set([...prev, component])]);
+        showComponent: async ({ component }: any) => {
+            setDashboardComponents((prev: any) => Array.from(new Set([...prev, component])));
             return `Component ${component} has been added to the dashboard.`;
         },
     };
 
-    const submitMessage = async (message) => {
+    const submitMessage = async (message:any) => {
         const tag = TAG + ' | submitMessage | ';
         try {
             console.log(tag, 'message:', message);

@@ -22,7 +22,7 @@ import {
 } from '@coinmasters/pioneer-lib';
 import Image from 'next/image';
 import { useOnStartApp } from "../utils/onStart";
-import Chat from './Chat';
+import Chat from './chat';
 
 export default function App() {
   const onStartApp = useOnStartApp();

@@ -6,22 +6,22 @@ import { Amount, Asset, Assets, Basic, Classic, Portfolio, Swap, Transfer } from
 import * as React from "react";
 import { useState } from "react";
 
-export default function Chat({ usePioneer }) {
+export default function Chat({ usePioneer }:any) {
     const { model, setModel, messages, input, setInput, isOllamaRunning, submitMessage, dashboardComponents, setDashboardComponents } = useOllamaChat(usePioneer);
 
     const onClose = () => {
         //console.log("onClose")
     };
 
-    const onSelect = (asset) => {
+    const onSelect = (asset:any) => {
         //console.log("onSelect: ", asset)
     };
 
-    const onAcceptSign = (tx) => {
+    const onAcceptSign = (tx:any) => {
         //console.log("onAcceptSign: ", tx)
     };
 
-    const setInputAmount = (amount) => {
+    const setInputAmount = (amount:any) => {
         console.log("setInputAmount: ", amount);
     };
 
@@ -50,7 +50,7 @@ export default function Chat({ usePioneer }) {
         });
     };
 
-    const handleCheckboxChange = (value) => {
+    const handleCheckboxChange = (value:any) => {
         setDashboardComponents(value);
     };
 
@@ -70,7 +70,8 @@ export default function Chat({ usePioneer }) {
             </CheckboxGroup>
 
             <Box maxH="300px" overflowY="scroll">
-                {messages.slice(-10).map((msg, index) => (
+                {messages.slice(-10).map((msg:any, index:any) => (
+                    // eslint-disable-next-line react/jsx-key
                     <div>
                         <Card key={index}>
                             <Box p={4}>

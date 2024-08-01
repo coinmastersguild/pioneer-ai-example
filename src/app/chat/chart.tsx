@@ -143,12 +143,13 @@
 
  */
 
-import { caipToNetworkId, ChainToNetworkId } from '@pioneer-platform/pioneer-caip';
-import { COIN_MAP_LONG } from '@pioneer-platform/pioneer-coins';
+//@ts-ignore
+import { ChainToNetworkId } from '@pioneer-platform/pioneer-caip';
+// import { COIN_MAP_LONG } from '@pioneer-platform/pioneer-coins';
 
 
 
-export const PROMPTS_INIT = [
+export const PROMPTS_INIT:any = [
     {
         role: 'system',
         content: [
@@ -172,7 +173,7 @@ export const PROMPTS_INIT = [
     }
 ];
 
-export const TOOLS = [
+export const TOOLS:any = [
     {
         type: 'function',
         function: {
